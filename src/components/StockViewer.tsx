@@ -79,7 +79,7 @@ const StockViewer: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl bg-gray-50 shadow-lg rounded-lg">
+    <div className="container mx-auto p-4 md:p-6 max-w-4xl bg-gray-50 shadow-lg rounded-lg">
       <div className="mb-8">
         <CompanySearch onSelect={handleSymbolSelect} />
       </div>
@@ -95,16 +95,16 @@ const StockViewer: React.FC = () => {
       )}
 
       {!isLoading && data && (
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+        <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
+          <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-gray-800">
             Symbol: {symbol}
           </h2>
 
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-6 text-gray-700">
+          <div className="mb-6 md:mb-8">
+            <h3 className="text-lg md:text-xl font-semibold mb-4 text-gray-700">
               Latest Data
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {[
                 { key: "o", label: "Open" },
                 { key: "h", label: "High" },
@@ -113,15 +113,15 @@ const StockViewer: React.FC = () => {
               ].map(({ key, label }) => (
                 <div
                   key={key}
-                  className={`flex flex-col items-left justify-center p-5 rounded-lg ${colorMap[key].bg} border border-slate-200`}
+                  className={`flex flex-col items-left justify-center p-4 md:p-5 rounded-lg ${colorMap[key].bg} border border-slate-200`}
                 >
                   <span
-                    className={`text-xs font-semibold tracking-wider ${colorMap[key].text}`}
+                    className={`text-xs md:text-sm font-semibold tracking-wider ${colorMap[key].text}`}
                   >
                     {label}
                   </span>
                   <p
-                    className={`text-3xl font-bold mt-1 ${colorMap[key].text}`}
+                    className={`text-2xl md:text-3xl font-bold mt-1 ${colorMap[key].text}`}
                   >
                     ${parseFloat(latestData[key] || "0").toFixed(2)}
                   </p>
@@ -131,11 +131,11 @@ const StockViewer: React.FC = () => {
           </div>
 
           {chartData.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold mb-4 text-gray-700">
+            <div className="mb-6 md:mb-8">
+              <h3 className="text-lg md:text-xl font-semibold mb-4 text-gray-700">
                 30 Day Price Chart
               </h3>
-              <div className="h-96 w-full bg-white rounded-lg shadow-sm p-4">
+              <div className="h-64 md:h-96 w-full bg-white rounded-lg shadow-sm p-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -179,7 +179,9 @@ const StockViewer: React.FC = () => {
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-gray-700">Raw Data</h3>
+              <h3 className="text-lg md:text-xl font-semibold text-gray-700">
+                Raw Data
+              </h3>
               <button
                 onClick={copyToClipboard}
                 className="bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-500 transition"
@@ -187,7 +189,7 @@ const StockViewer: React.FC = () => {
                 {copySuccess ? copySuccess : "Copy Raw Data"}
               </button>
             </div>
-            <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-60 text-sm text-gray-700">
+            <pre className="bg-gray-100 p-4 rounded-md overflow-auto max-h-60 text-xs md:text-sm text-gray-700">
               {JSON.stringify(data, null, 2)}
             </pre>
           </div>

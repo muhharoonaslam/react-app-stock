@@ -7,19 +7,21 @@ interface CompanySearchProps {
   onSelect: (symbol: string) => void;
 }
 
+// Move the debounce function outside of the component
+const debouncedSetSearchTerm = debounce((callback: (term: string) => void, term: string) => {
+  callback(term);
+}, 500);
+
 const CompanySearch: React.FC<CompanySearchProps> = ({ onSelect }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Memoize the debounce function to avoid creating it on every render
-  const debounceSearch = useCallback(
-    debounce((term: string) => {
-      setDebouncedSearchTerm(term);
-    }, 500),
-    []
-  );
+  // Use useCallback with an inline function
+  const debounceSearch = useCallback((term: string) => {
+    debouncedSetSearchTerm(setDebouncedSearchTerm, term);
+  }, []);
 
   useEffect(() => {
     if (searchTerm) {
@@ -27,9 +29,9 @@ const CompanySearch: React.FC<CompanySearchProps> = ({ onSelect }) => {
     }
 
     return () => {
-      debounceSearch.cancel();
+      debouncedSetSearchTerm.cancel();
     };
-  }, [searchTerm, debounceSearch]); // Now debounceSearch is included as a dependency
+  }, [searchTerm, debounceSearch]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["searchSymbols", debouncedSearchTerm],
