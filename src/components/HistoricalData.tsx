@@ -75,7 +75,7 @@ const HistoricalData: React.FC = () => {
               key={index}
               className="bg-white p-6 shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out"
             >
-              <h3 className="text-xs font-bold text-blue-600 mb-3">
+              <h3 className="text-xs font-bold text-gray-900 mb-3">
                 {new Date(item.t).toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",
