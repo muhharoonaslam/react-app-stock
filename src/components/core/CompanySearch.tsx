@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchSymbols } from "../../services/polygon";
 import debounce from "lodash/debounce";
@@ -13,9 +13,13 @@ const CompanySearch: React.FC<CompanySearchProps> = ({ onSelect }) => {
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const debounceSearch = debounce((term: string) => {
-    setDebouncedSearchTerm(term);
-  }, 500);
+  // Memoize the debounce function to avoid creating it on every render
+  const debounceSearch = useCallback(
+    debounce((term: string) => {
+      setDebouncedSearchTerm(term);
+    }, 500),
+    []
+  );
 
   useEffect(() => {
     if (searchTerm) {
@@ -25,7 +29,7 @@ const CompanySearch: React.FC<CompanySearchProps> = ({ onSelect }) => {
     return () => {
       debounceSearch.cancel();
     };
-  }, [searchTerm]);
+  }, [searchTerm, debounceSearch]); // Now debounceSearch is included as a dependency
 
   const { data, isLoading } = useQuery({
     queryKey: ["searchSymbols", debouncedSearchTerm],
