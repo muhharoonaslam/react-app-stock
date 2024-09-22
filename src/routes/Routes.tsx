@@ -1,4 +1,3 @@
-// src/routes/Routes.tsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import StockViewer from "../components/StockViewer";
