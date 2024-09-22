@@ -8,7 +8,6 @@ const HistoricalData: React.FC = () => {
   const [fromDate, setFromDate] = useState("2023-01-01");
   const [toDate, setToDate] = useState("2023-02-01");
 
- 
   const handleSymbolSelect = useCallback((selectedSymbol: string) => {
     setSymbol(selectedSymbol);
   }, []);
@@ -24,12 +23,11 @@ const HistoricalData: React.FC = () => {
         Historical Data for {symbol}
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="w-full">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Company Name
           </label>
-          {/* Pass memoized handleSymbolSelect to CompanySearch */}
           <CompanySearch onSelect={handleSymbolSelect} />
         </div>
         <div>
@@ -57,29 +55,27 @@ const HistoricalData: React.FC = () => {
       </div>
 
       {isLoading && (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Fetching historical data...</p>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">Fetching historical data...</p>
         </div>
       )}
+
       {error && (
-        <div
-          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
-          role="alert"
-        >
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r-md" role="alert">
           <p className="font-bold">Error</p>
           <p>Failed to fetch historical data. Please try again later.</p>
         </div>
       )}
 
       {data && (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.results.map((item: any, index: number) => (
             <div
               key={index}
-              className="bg-white p-6 shadow-lg rounded-lg border border-gray-200"
+              className="bg-white p-6 shadow-lg rounded-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out"
             >
-              <h3 className="text-lg font-bold text-gray-800 mb-2">
+              <h3 className="text-xs font-bold text-blue-600 mb-3">
                 {new Date(item.t).toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",
@@ -87,19 +83,33 @@ const HistoricalData: React.FC = () => {
                   day: "numeric",
                 })}
               </h3>
-              <div className="text-gray-700">
-                <p className="mb-1">
-                  <span className="font-semibold">Open:</span> ${item.o.toFixed(2)}
-                </p>
-                <p className="mb-1">
-                  <span className="font-semibold">Close:</span> ${item.c.toFixed(2)}
-                </p>
-                <p className="mb-1">
-                  <span className="font-semibold">High:</span> ${item.h.toFixed(2)}
-                </p>
-                <p className="mb-1">
-                  <span className="font-semibold">Low:</span> ${item.l.toFixed(2)}
-                </p>
+              <div className="grid grid-cols-2 gap-4 text-gray-700">
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-500">Open</span>
+                  <span className="text-lg font-semibold">${item.o.toFixed(2)}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-500">Close</span>
+                  <span className="text-lg font-semibold">${item.c.toFixed(2)}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-500">High</span>
+                  <span className="text-lg font-semibold text-green-600">${item.h.toFixed(2)}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-500">Low</span>
+                  <span className="text-lg font-semibold text-red-600">${item.l.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-500">Change</span>
+                  <span className={`text-sm font-semibold ${
+                    item.c > item.o ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {((item.c - item.o) / item.o * 100).toFixed(2)}%
+                  </span>
+                </div>
               </div>
             </div>
           ))}

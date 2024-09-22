@@ -9,7 +9,7 @@ const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md mb-6 container mx-auto p-6 max-w-4xl bg-gray-50 shadow-lg rounded-lg">
+    <nav className=" mb-6 container mx-auto p-6 max-w-4xl bg-gray-50 shadow-lg rounded-lg">
       <div className="container mx-auto p-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-600">Stock App</h1>
 
