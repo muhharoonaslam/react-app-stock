@@ -7,7 +7,6 @@ interface CompanySearchProps {
   onSelect: (symbol: string) => void;
 }
 
-// Move the debounce function outside of the component
 const debouncedSetSearchTerm = debounce((callback: (term: string) => void, term: string) => {
   callback(term);
 }, 500);
@@ -18,7 +17,6 @@ const CompanySearch: React.FC<CompanySearchProps> = ({ onSelect }) => {
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Use useCallback with an inline function
   const debounceSearch = useCallback((term: string) => {
     debouncedSetSearchTerm(setDebouncedSearchTerm, term);
   }, []);

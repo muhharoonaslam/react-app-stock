@@ -1,14 +1,14 @@
 import React, { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHistoricalData } from "../services/polygon";
-import CompanySearch from "./core/CompanySearch"; // Ensure this path is correct
+import CompanySearch from "./core/CompanySearch";
 
 const HistoricalData: React.FC = () => {
   const [symbol, setSymbol] = useState("AAPL");
   const [fromDate, setFromDate] = useState("2023-01-01");
   const [toDate, setToDate] = useState("2023-02-01");
 
-  // Memoize the handleSymbolSelect function to prevent unnecessary re-renders
+ 
   const handleSymbolSelect = useCallback((selectedSymbol: string) => {
     setSymbol(selectedSymbol);
   }, []);

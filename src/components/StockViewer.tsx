@@ -24,7 +24,7 @@ const Skeleton: React.FC<{ width: string; height: string }> = ({
 
 const StockViewer: React.FC = () => {
   const [symbol, setSymbol] = useState("AAPL");
-  const [copySuccess, setCopySuccess] = useState(""); // State to show copy success message
+  const [copySuccess, setCopySuccess] = useState(""); 
 
   const { data, isLoading } = useQuery({
     queryKey: ["stockData", symbol],
@@ -55,7 +55,6 @@ const StockViewer: React.FC = () => {
 
   const latestData = data?.results?.[data.results.length - 1] || {};
 
-  // Color map for consistency between cards and chart lines
   const colorMap: any = {
     o: { bg: "bg-white-100", text: "text-[#82ca9d]", line: "#82ca9d" },
     h: { bg: "bg-white-100", text: "text-[#ff7300]", line: "#ff7300" },
@@ -63,7 +62,6 @@ const StockViewer: React.FC = () => {
     c: { bg: "bg-white-100", text: "text-[#387908]", line: "#387908" },
   };
 
-  // Function to copy raw data to clipboard
   const copyToClipboard = () => {
     if (data) {
       navigator.clipboard.writeText(JSON.stringify(data, null, 2)).then(

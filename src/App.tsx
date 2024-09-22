@@ -1,8 +1,7 @@
-// src/App.tsx
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Navigation from "./components/core/Naigation";
-import AppRoutes from "./routes/Routes"; // Decoupled Routes
+import AppRoutes from "./routes/Routes"; 
 import './App.css';
 import './index.css';
 

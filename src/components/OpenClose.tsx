@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchOpenClose } from "../services/polygon";
-import CompanySearch from "./core/CompanySearch"; // Ensure this path is correct
+import CompanySearch from "./core/CompanySearch";
 
 const OpenClose: React.FC = () => {
   const [symbol, setSymbol] = useState("AAPL");
   const [date, setDate] = useState("2023-02-01");
 
-  // Memoize the function to prevent unnecessary re-renders
+ 
   const handleSymbolSelect = useCallback((selectedSymbol: string) => {
     setSymbol(selectedSymbol);
   }, []);
