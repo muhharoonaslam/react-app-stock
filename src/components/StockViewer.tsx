@@ -13,11 +13,20 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const Skeleton: React.FC<{ width: string; height: string }> = ({
+  width,
+  height,
+}) => (
+  <div
+    className={`bg-gray-300 animate-pulse ${width} ${height} rounded-lg`}
+  ></div>
+);
+
 const StockViewer: React.FC = () => {
   const [symbol, setSymbol] = useState("AAPL");
   const [copySuccess, setCopySuccess] = useState(""); // State to show copy success message
 
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["stockData", symbol],
     queryFn: () => fetchHistoricalData(symbol, "2023-01-01", "2023-02-01"),
     staleTime: 1000 * 60 * 5,
@@ -47,7 +56,7 @@ const StockViewer: React.FC = () => {
   const latestData = data?.results?.[data.results.length - 1] || {};
 
   // Color map for consistency between cards and chart lines
-  const colorMap:any = {
+  const colorMap: any = {
     o: { bg: "bg-white-100", text: "text-[#82ca9d]", line: "#82ca9d" },
     h: { bg: "bg-white-100", text: "text-[#ff7300]", line: "#ff7300" },
     l: { bg: "bg-white-100", text: "text-[#8884d8]", line: "#8884d8" },
@@ -71,32 +80,21 @@ const StockViewer: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6 max-w-4xl bg-gray-50 shadow-lg rounded-lg">
-      <h1 className="text-3xl font-bold mb-8 text-center text-blue-600">
-        Advanced Stock Data Viewer
-      </h1>
-
       <div className="mb-8">
         <CompanySearch onSelect={handleSymbolSelect} />
       </div>
 
       {isLoading && (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading stock data...</p>
+        <div className="mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, idx) => (
+              <Skeleton key={idx} width="w-full" height="h-16" />
+            ))}
+          </div>
         </div>
       )}
 
-      {error && (
-        <div
-          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6"
-          role="alert"
-        >
-          <p className="font-bold">Error</p>
-          <p>Failed to fetch stock data. Please check the symbol and try again.</p>
-        </div>
-      )}
-
-      {data && (
+      {!isLoading && data && (
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">
             Symbol: {symbol}
